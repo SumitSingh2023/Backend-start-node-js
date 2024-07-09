@@ -1,0 +1,6 @@
+module are of 3 types
+1.inbult module = node module
+2.custom module = module made by us and export to it
+3. external module = npm install --- 
+
+this are 3 types of modules.
