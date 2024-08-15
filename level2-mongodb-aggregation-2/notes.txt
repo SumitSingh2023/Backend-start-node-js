@@ -1,0 +1,42 @@
+1.Write Mongo query to retrieve documents from the orders in ascending order by total.
+Ans :  db.orders.find().sort({total:1})
+
+2. Write Mongo query to retrieve the oldest paymentMethod from the payments collection as "_id".
+Ans :  db.payments.aggregate([{$sort:{payment_date:1}},{$limit:1},{$project:{_id:"$paymentMethod"}}])
+
+3.Write Mongo query to retrieve 2nd and 3rd buyers from the buyers collection.
+Ans :-  db.buyers.find().skip(1).limit(2)
+
+4.Write Mongo query to retrieve the most Expensive product from order_details.
+Ans :-  db.order_details.find().sort({price:-1}).limit(1)
+
+5.Write Mongo query to retrieve the first order from the orders as per the order_date.
+Ans :- db.orders.find().sort({order_date:1}).limit(1)
+
+6.Write Mongo query to retrieve the last 3 orders from the orders collection who have less total amount.
+Ans :-  db.orders.find().sort({total:1}).limit(3)
+
+7.Write Mongo query to retrieve the most recent shipped order from the orders collection.
+Ans :-  db.orders.aggregate([{$match:{status:"shipped"}},{$sort:{order_date:-1}},{$limit:1}])
+
+8.Write Mongo query to get the total revenue from all orders.
+Ans :  db.orders.aggregate([{$group:{_id:null,totalRevenue:{$sum:"$total"}}}])
+
+9.Write Mongo query to retrieve all the orders that shipped before 2022-05-26
+Ans :-  db.orders.aggregate([{$match:{status:"shipped",ship_date:{$lte:("2022-05-26")}}}])
+
+10.Write Mongo query to find the maximum price as maxPrice of products and their names as name for each category.
+Ans :- db.products.aggregate([{$group:{_id:"$category",maxPrice:{$max:"$price"},names:{$push:"$name"}}},{$project:{_id:0,category:"$_id",maxPrice:1,names:1}}])
+
+11.Write Mongo query to find Most used payment Method as paymentMethod and the number of time it is used as count.
+Ans :-db.payments.aggregate([{$group:{_id:"$paymentMethod",count:{$sum:1}}},{$sort:{count: -1}},{$limit:1},{$project:{_id:0,paymentMethod:"$_id",count:1}}])
+
+12.Write Mongo query to find the total count of orders by status.
+Ans :-  db.orders.aggregate([{$group:{_id:"status",count:{$sum:1}}},{$project:{_id:0,status:"$_id",count:1}}])
+
+13.Write Mongo query to retrieve the orders grouped by customer_id with the max total
+Ans :- db.orders.aggregate([{$group:{_id:"$customer_id",maxTotal:{$max:"$total"}}},{$project:{_id:0,customer_id:"$_id",maxTotal:1}}])
+
+14.Assess the impact of RAM capacity on laptop prices and ratings. Group laptops by RAM capacity and analyze the average price and rating for each group. Identify any significant trends or outliers.
+
+Ans:- db.laptop.aggregate([{$group:{_id:"$ram_capacity",avgPrice:{$avg:"$price"},avgRating: { $avg: "$rating" }, count: { $sum: 1 } }}])
